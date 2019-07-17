@@ -1,0 +1,38 @@
+Index.Js
+_______________
+const Firestore = require('@google-cloud/firestore');
+const PROJECTID = ' YOUR PROJECT ID';
+const COLLECTION_NAME = 'YOUR COLLECTION NAME';
+const firestore = new Firestore({
+  projectId: PROJECTID,
+});
+exports.helloWorld = (req, res) => {
+  
+  firestore.collection('YOUR COLLECTION NAME').get()
+  .then((snapshot) => {
+    snapshot.forEach((doc) => {
+      console.log(doc.id, '=>', doc.data().yourField);
+      let ans = {
+        date : doc.data().yourField
+      };
+      res.status(200).send(ans);
+    });
+  })
+  .catch((err) => {
+    console.log('Error getting documents', err);
+     let error = {
+        message: 'error!'
+    };
+    res.status(400).send(error)
+  });
+};
+
+Package.json
+_______________
+{
+	"name": "sample-http",
+	"version": "0.0.1",
+	"dependencies": {
+		"@google-cloud/firestore": "^2.2.4"
+	}
+}
