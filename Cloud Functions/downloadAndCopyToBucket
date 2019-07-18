@@ -1,3 +1,5 @@
+>>>>Index.js
+
 const {Storage} = require('@google-cloud/storage');
 
 exports.writeToBucket = (req, res) => {
@@ -30,3 +32,16 @@ storage.bucket(bucketName).upload(filename, {
 res.status(200).send(`${filename} uploaded to ${bucketName}.`);
 
 };
+
+___________________________________________
+
+package.json
+
+{
+  "name": "sample-http",
+  "version": "0.0.1",
+  "dependencies": {
+		"@google-cloud/storage": "^3.0.3"
+	}
+}
+
