@@ -1,0 +1,32 @@
+const {Storage} = require('@google-cloud/storage');
+
+exports.writeToBucket = (req, res) => {
+const http = require('http');
+const fs = require('fs');
+
+const file = fs.createWriteStream("/tmp/yourfile.jpg");
+const request = http.get("YOUR_URL_TO_DOWNLOAD_A_FILE", function(response) {
+  response.pipe(file);
+});
+
+console.log('file downloaded');
+
+// Imports the Google Cloud client library
+const {Storage} = require('@google-cloud/storage');
+
+// Creates a client
+const storage = new Storage();
+const bucketName = 'YOUR_BUCKET_NAME';
+const filename = '/tmp/yourfile.jpg';
+
+// Uploads a local file to the bucket
+storage.bucket(bucketName).upload(filename, {
+  gzip: true,
+  metadata: {
+    cacheControl: 'no-cache',
+  },
+});
+
+res.status(200).send(`${filename} uploaded to ${bucketName}.`);
+
+};
