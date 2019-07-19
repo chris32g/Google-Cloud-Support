@@ -1,0 +1,30 @@
+This function limit the maximun storage size of a bucket moving older files into a cold bucket and keeping the newest
+
+_________________________________________________________________
+main.py
+
+from google.cloud import storage
+
+def check_paul(data, context):
+   client = storage.Client()
+   bucket = client.get_bucket(data['bucket'])
+   cold_bucket = client.get_bucket("YOUR_COLD_BUCKET_NAME")
+       
+   files = bucket.list_blobs()
+       
+   sorted_files = sorted(files, key=lambda x: x.time_created, reverse=True)
+       
+   bucket_used_space = 0
+   bucket_allowed_limit = 50000000
+   for blob in sorted_files:
+       bucket_used_space += blob.size
+       if bucket_used_space > bucket_allowed_limit:
+           bucket.copy_blob(blob=blob, destination_bucket=cold_bucket)
+           blob.delete()
+           
+           
+_________________________________________________________________
+
+requirements.txt
+
+google.cloud.storage
