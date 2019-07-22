@@ -1,6 +1,6 @@
-This function upload a local file to a bucket
+#This function upload a local file to a bucket
 
-______________________________
+#______________________________
 from google.cloud import storage
 
 
