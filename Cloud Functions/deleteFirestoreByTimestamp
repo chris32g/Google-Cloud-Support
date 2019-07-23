@@ -1,0 +1,44 @@
+//This Cloud Function delete a document form a Firestore Database when its field "timestamp" its older than the current date
+
+//index.js
+//___________________________________________
+
+const Firestore = require('@google-cloud/firestore');
+const PROJECTID = 'funcfirestore';
+const COLLECTION_NAME = 'users';
+const firestore = new Firestore({
+  projectId: PROJECTID,
+});
+exports.helloWorld = (req, res) => {
+   
+  firestore.collection('users').get()
+  .then((snapshot) => {
+    snapshot.forEach((doc) => {
+   		 if (doc.data().timestamp < Date.now()) {
+             firestore.collection('users').doc(doc.id).delete();
+         }
+      console.log(doc.id, '=>', doc.data());
+      let ans = {
+        date : doc.ref.id
+      };
+      res.status(200).send(ans);
+    });
+  })
+  .catch((err) => {
+    console.log('Error getting documents', err);
+     let error = {
+        message: 'error!'
+    };
+    res.status(400).send(error)
+  });
+};
+
+//package.json
+//___________________________________________
+{
+	"name": "sample-http",
+	"version": "0.0.1",
+	"dependencies": {
+		"@google-cloud/firestore": "^2.2.4"
+	}
+}
