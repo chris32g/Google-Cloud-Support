@@ -1,0 +1,34 @@
+# This file uses the Cloud SQL admin API to turn off a Cloud SQL instance
+
+from pprint import pprint
+from googleapiclient import discovery
+from oauth2client.client import GoogleCredentials
+
+credentials = GoogleCredentials.get_application_default()
+
+service = discovery.build('sqladmin', 'v1beta4', credentials=credentials)
+
+# Project ID of the project that contains the instance.
+project = '>>>YOUR PROJECT NAME<<<'  # TODO: Update placeholder value.
+
+# Cloud SQL instance ID. This does not include the project ID.
+instance = '>>>YOUR INSTANCE NAME<<<'  # TODO: Update placeholder value.
+request = service.instances().get(project=project, instance=instance)
+response = request.execute()
+j = response["settings"]
+settingsVersion = int(j["settingsVersion"])
+
+dbinstancebody = {
+   "settings": {
+       "settingsVersion": settingsVersion,
+       "tier": "db-n1-standard-1",
+       "activationPolicy": "Never"
+   }
+}
+
+request = service.instances().update(
+   project=project,
+   instance=instance,
+   body=dbinstancebody)
+response = request.execute()
+pprint(response)
