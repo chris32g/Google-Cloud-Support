@@ -1,0 +1,20 @@
+    import csv
+    from google.cloud import storage
+    
+    client = storage.Client()
+    bucket = client.get_bucket('YOUR.BUCKET.NAME')
+    blob = bucket.get_blob('FILE1.NAME')
+    blob.download_to_filename('FILE1.NAME')
+    blob2 = bucket.get_blob('FILE1.NAME')
+    blob.download_to_filename('FILE2.NAME')
+    csvs = ["FILE1.NAME", "FILE2.NAME"]
+    writer = csv.writer(open('appended_output.csv', 'wt'))
+    for x in csvs:
+        with open(x, "rt") as files:
+            reader = csv.reader(files)
+            next(reader, None)
+            for data in reader:
+                writer.writerow(data)
+    
+    blob = bucket.blob("appended_output.csv")
+    blob.upload_from_filename("appended_output.csv")
