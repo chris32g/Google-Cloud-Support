@@ -1,16 +1,16 @@
 # This file uses the Cloud SQL admin API to turn off a Cloud SQL instance
-# from pprint import pprint
+# Last test on 4/16/2020
 from googleapiclient import discovery
 from oauth2client.client import GoogleCredentials
 
 credentials = GoogleCredentials.get_application_default()
 service = discovery.build('sqladmin', 'v1beta4', credentials=credentials)
-project = 'wave24-gonchristian'  # TODO: Update placeholder value.
+project = 'YOUR_PROJECT_ID'  # TODO: Update placeholder value.
 
 
 def hello_world(request):
 
-    instance = 'test'  # TODO: Update placeholder value.
+    instance = 'YOUR_INSTANCE_NAME'  # TODO: Update placeholder value.
     request = service.instances().get(project=project, instance=instance)
     response = request.execute()
     j = response["settings"]
@@ -44,7 +44,7 @@ ________________________
 
 requirements.txt
 
-google-api-python-client==1.7.8
-google-auth-httplib2==0.0.3
-google-auth==1.6.2
-oauth2client==4.1.3
+google-api-python-client
+google-auth-httplib2
+google-auth
+oauth2client
