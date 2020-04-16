@@ -1,0 +1,31 @@
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+def hello_world(request):
+   
+    request_json = request.get_json()
+    sgKey = 'YOUR_SENDGRID_API_KEY'
+    message = Mail(
+        from_email='from_email@example.com',
+        to_emails='EXAMPLE@gmail.com',
+        subject='Sending with Twilio SendGrid is Fun',
+        html_content='<strong>and easy to do anywhere, even with Python</strong>')
+    try:
+        sg = SendGridAPIClient(sgKey)
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+    except Exception as e:
+        print(e.message)
+    
+    if request.args and 'message' in request.args:
+        return request.args.get('message')
+    elif request_json and 'message' in request_json:
+        return request_json['message']
+    else:
+        return f'message sent'
+        
+ Requirements
+
+sendgrid
