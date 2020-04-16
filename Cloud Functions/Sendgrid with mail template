@@ -4,12 +4,12 @@ from sendgrid.helpers.mail import *
 def hello_world(request):
    
     request_json = request.get_json()
-    sgKey = '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'
+    sgKey = 'YOUR_KEY_HERE'
     message = Mail(
         from_email='from_email@example.com',
-        to_emails='chris32p@gmail.com',
+        to_emails='EXAMPLE@gmail.com',
         subject='Sending with Twilio SendGrid is Fun')
-    message.template_id = 'd-52795efa3363480fa09f3236fa6aba91'
+    message.template_id = 'd-YOUR_TEMPLATE_ID'
     try:
         sg = SendGridAPIClient(sgKey)
         response = sg.send(message)
